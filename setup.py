@@ -30,7 +30,7 @@ test_requirements = [
 
 setup(
     name='course_backup',
-    version='0.1.0',
+    version='0.1.1',
     description="backup open edx courses",
     long_description=readme + '\n\n' + history,
     author="wenjie wu",
@@ -63,7 +63,7 @@ setup(
     tests_require=test_requirements,
     entry_points={
          'console_scripts': [
-                         'backup_course = course_backup.course_backup:main'
+                         'course_backup = course_backup.course_backup:main'
             ]
         }
 )
