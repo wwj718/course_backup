@@ -30,7 +30,7 @@ test_requirements = [
 
 setup(
     name='course_backup',
-    version='0.1.1',
+    version='0.1.2',
     description="backup open edx courses",
     long_description=readme + '\n\n' + history,
     author="wenjie wu",

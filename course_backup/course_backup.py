@@ -11,6 +11,7 @@ import sys
 import click
 from ConfigParser import SafeConfigParser
 import datetime
+import shutil
 
 class StudioConnection(object):
     '''
@@ -91,8 +92,30 @@ class StudioConnection(object):
         #courses = [self.download_url(url,id.replace("/","_")) for (id,url) in course_id_and_download_urls]
         #dogwood
         courses = [self.download_url(url,os.path.join(self.data_path,self.format_course_file_name(id))) for (id,url) in course_id_and_download_urls]
-        print courses
+        print "完成备份"
+        self.keep(self.data_path)
         return courses
+
+    def keep(self,data_path,num=3,cycle=7):
+        """
+        Keep number of backups
+        backup every week , keep 2 data_dir
+        how to test it
+        """
+        for dirname in os.listdir(data_path):
+            #dir_absolute_path = os.path.abspath(dirname) #这是从当前目录触发的拼凑结果
+            dir_absolute_path = os.path.join(data_path,dirname)
+            dir_modified = datetime.datetime.fromtimestamp(os.stat(dir_absolute_path).st_mtime)
+            now = datetime.datetime.now()
+            if now - dir_modified > datetime.timedelta(days=num*cycle):
+                print (now - dir_modified)
+                #delete dir
+                #do not run it with sudo!
+                #print (os.path.abspath(dir_absolute_path))
+                shutil.rmtree(dir_absolute_path)
+                print u"删除{}目录".format(dir_absolute_path)
+                pass
+
 
 @click.command()
 @click.option('--studio',default=None, help='The url of edx studio.')
@@ -144,11 +167,15 @@ def main(studio,sessionid,csrftoken,courses_data_path,config_file,start,night):
         schedule.every().day.at("02:00").do(studioConn.course_backup)
     else:
         print u"正在备份..."
-        studioConn.course_backup()
+        result =  studioConn.course_backup()
+        print result
+        # test keep
+        #studioConn.keep(courses_data_path,0)
+        studioConn.keep(courses_data_path)
     #schedule.every().day.at("02:00").do(studioConn.course_backup)
     #ApplicationInstance()  # 保证脚本单例运行
     #schedule 抽离出来写,直接手写而不是配置
-    while True:
+    while night:
           schedule.run_pending()
           time.sleep(1)
 
