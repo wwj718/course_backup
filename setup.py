@@ -15,7 +15,7 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    "requests==2.9.1",
+    "requests==2.20.0",
     "schedule==0.3.2",
     "click==6.3",
     "html5lib==0.9999999",
