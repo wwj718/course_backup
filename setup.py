@@ -18,7 +18,7 @@ requirements = [
     "requests==2.9.1",
     "schedule==0.3.2",
     "click==6.3",
-    "html5lib==0.9999999",
+    "html5lib==0.999999999",
     "beautifulsoup4==4.4.1",
     "tomorrow==0.2.4"
     # TODO: put package requirements here
